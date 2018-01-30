@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>Alternative of Serilog Build-in Rolling File. Extended to limit to log file size, seperate files for log level, and log file retention.</Description>
+    <PackageLicenseUrl>https://github.com/ersintarhan/Serilog.Sinks.RollingFileAlternative/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/ersintarhan/Serilog.Sinks.RollingFileAlternative</PackageProjectUrl>
+    <PackageIconUrl>http://serilog.net/images/serilog-sink-nuget.png</PackageIconUrl>
+    <PackageTags>Serilog LogLevel RollingFile</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Polly" Version="5.7.0" />
+    <PackageReference Include="Serilog" Version="2.6.0" />
+  </ItemGroup>
+
+</Project>
