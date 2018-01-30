@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Polly;
 using Serilog.Core;
 using Serilog.Debugging;
 using Serilog.Events;
@@ -158,15 +157,10 @@ namespace Serilog.Sinks.RollingFileAlternative.Sinks
         {
             try
             {
-                TimeSpan SleepFunc(int retryNumber)
-                {
-                    return TimeSpan.FromMilliseconds(AsyncOptions.RetryWaitInMillisecond * retryNumber);
-                }
-
-                var polly = Policy.Handle<Exception>();
-                polly.WaitAndRetry(AsyncOptions.MaxRetries, SleepFunc,
-                        (exception, timeSpan) => Log.Error("Error executing callback {@Exception}", exception))
-                    .Execute(ProcessQueueWithRetry);
+                RetryHelper.RetryHelper.Instance.Try(ProcessQueueWithRetry)
+                    .WithMaxTryCount(AsyncOptions.MaxRetries)
+                    .OnFailure(result => Log.Error(string.Format("Try failed. Got {0}", result)))
+                    .UntilNoException();
             }
             catch (Exception ex)
             {
